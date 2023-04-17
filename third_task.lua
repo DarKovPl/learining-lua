@@ -26,7 +26,7 @@ end
 
 function get_game_mode()
   while true do
-    io.write("Choose the game mode (1: Original, 2: Computer guesses, 3: Alternate): ")
+    io.write("Choose the game mode (1: Original, 2: Computer guesses, 3: Mix game): ")
     local input = io.read()
     local num = tonumber(input)
     if num ~= nil and (num == 1 or num == 2 or num == 3) then
@@ -35,6 +35,7 @@ function get_game_mode()
     print("Invalid input, please enter a valid game mode (1, 2, or 3).")
   end
 end
+
 
 function play_game(mode, difficulty)
   local max_range = 100
@@ -49,12 +50,35 @@ function play_game(mode, difficulty)
   elseif mode == 2 then
     return play_computer_guesses_game(max_range)
   else
-    return play_alternate_game(max_range)
+    return play_mix_game(max_range)
   end
 end
 
 function play_original_game(max_range)
-    print("Welcome to the computer guessing game!")
+  print("Welcome to the player guessing game! Enter name:")
+  local name = io.read("*l")
+  print("Hello, " .. name .. "!")
+  
+  local answer = math.random(1, max_range)
+  local num_guesses = 0
+  
+  while true do
+    local guess = get_integer_input(name .. ", guess a number between 1 and " .. max_range .. ": ")
+    num_guesses = num_guesses + 1
+  
+    if guess == answer then
+      print("Congratulations, " .. name .. "! You guessed the number in " .. num_guesses .. " tries!")
+      return num_guesses
+    elseif guess < answer then
+      print("The number is higher than your guess.")
+    else
+      print("The number is lower than your guess.")
+    end
+  end
+end
+
+function play_computer_guesses_game(max_range)
+    print("Welcome to the computer guessing game! Enter name:")
     local name = io.read("*l")
     print("Hello, " .. name .. "!")
   
@@ -81,8 +105,8 @@ function play_original_game(max_range)
     end
   end
 
-function play_alternate_game(max_range)
-  print("Welcome to the alternate number guessing game!")
+function play_mix_game(max_range)
+  print("Welcome to the alternate number guessing game! Enter name:")
   local name = io.read("*l")
   print("Hello, " .. name .. "!")
 

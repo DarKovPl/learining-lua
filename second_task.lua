@@ -1,6 +1,9 @@
-math.randomseed(os.time()) -- initialize random number generator
+math.randomseed(os.time())
 
--- Function to get user input as integer
+print("Welcome to the number guessing game! Enter name:")
+local name = io.read("*l")
+print("Hello, " .. name .. "!")
+
 function get_integer_input(prompt)
   while true do
     io.write(prompt)
@@ -13,12 +16,8 @@ function get_integer_input(prompt)
   end
 end
 
--- Function to play one round of the game
 function play_game()
-  print("Welcome to the number guessing game!")
-  local name = io.read("*l")
-  print("Hello, " .. name .. "!")
-  
+    
   local answer = math.random(1, 100)
   local num_guesses = 0
   
@@ -37,7 +36,6 @@ function play_game()
   end
 end
 
--- Main function to run the game
 function main()
   local num_games = 0
   local total_guesses = 0
