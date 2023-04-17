@@ -1,156 +1,82 @@
---[[
-local imie
-io.write("Podaj Imii©")
-imie = io.read()
-print('Jestem',imie)
-
-
-
-local imie
-local wiek
-io.write("Podaj Imi©\n")
-imie = io.read()
-io.write("Podaj Wiek\n")
-wiek = tonumber(io.read())
-print('Jestem',imie)
-print('Mam lat:',wiek)
-
-]]--
-
--- local wiek
--- io.write("Podaj Wiek\n")
--- wiek = tonumber(io.read())
-
--- if(wiek<=10)then
---     io.write("Jeste˜ mˆody\n")
--- elseif (wiek>10 and wiek<60)then
---     io.write("Jeste˜ ˜redni wiekiem\n")
--- else
---     io.write("Jeste˜ stary\n")
--- end
-
--- for i = 1, 10 do
---     print(i)
--- end
-
-
-
--- Welcome message and prompt for user input
-io.write("Welcome! What's your name? ")
+io.write("Enter your name: ")
 local name = io.read()
-print("Hi " .. name .. "! Let's perform some matrix operations.")
 
--- List of possible operations
-local operations = {"add", "subtract", "multiply", "exit"}
+print("Hello, "..name.."!")
 
-
-function table.contains(table, element)
-    for _, value in pairs(table) do
-        if value == element then
-            return true
-        end
-    end
-    return false
+function matrix_multiply(matrix1, matrix2)
+  local result_matrix = {}
+  for i=1,#matrix1 do
+      local row = {}
+      for j=1,#matrix2[1] do
+          local sum = 0
+          for k=1,#matrix2 do
+              sum = sum + matrix1[i][k] * matrix2[k][j]
+          end
+          table.insert(row, sum)
+      end
+      table.insert(result_matrix, row)
+  end
+  return result_matrix
 end
 
--- Prompt for operation selection
-local operation
-repeat
-    print("Select an operation: add, subtract, multiply, or exit")
-    operation = io.read()
-until table.contains(operations, operation)
-
--- Prompt for matrix dimensions
-print("Enter the dimensions of the matrices (e.g. '3x3')")
-local dimensions = io.read()
-local rows, cols = dimensions:match("(%d+)x(%d+)")
-rows, cols = tonumber(rows), tonumber(cols)
-
--- Prompt for values to fill matrices
-print("Enter a value to fill the first matrix")
-local a = tonumber(io.read())
-print("Enter a value to fill the second matrix")
-local b = tonumber(io.read())
-
--- Create matrices and fill with values
-local matrixA = {}
-local matrixB = {}
-for i = 1, rows do
-    matrixA[i] = {}
-    matrixB[i] = {}
-    for j = 1, cols do
-        matrixA[i][j] = a
-        matrixB[i][j] = b
-    end
+function print_matrix(matrix)
+  for i=1,#matrix do
+      for j=1,#matrix[i] do
+          io.write(matrix[i][j].." ")
+      end
+      io.write("\n")
+  end
 end
 
--- Perform operation and display result
-local result
-if operation == "add" then
-    result = matrixAdd(matrixA, matrixB)
-elseif operation == "subtract" then
-    result = matrixSubtract(matrixA, matrixB)
-elseif operation == "multiply" then
-    result = matrixMultiply(matrixA, matrixB)
-else
-    os.exit()
-end
-print("Result:")
-matrixPrint(result)
+while true do
+  print("Choose an operation:")
+  print("1 Matrix multiplication")
+  print("0 Exit")
 
--- Prompt for next operation or exit
-local choice
-repeat
-    print("Enter 'c' to perform another operation or 'x' to exit")
-    choice = io.read()
-until choice == "c" or choice == "x"
+  -- Get user input for operation choice
+  io.write("Operation: ")
+  local operation = tonumber(io.read())
 
-if choice == "c" then
-    os.execute("clear") -- clear terminal for better user experience
-    dofile("matrix_operations.lua") -- restart the program
-else
-    os.exit()
-end
+  if operation == 0 then
+      print("Goodbye, "..name.."!")
+      break
+  end
 
--- Matrix addition function
-function matrixAdd(a, b)
-    local rows, cols = #a, #a[1]
-    local result = {}
-    for i = 1, rows do
-        result[i] = {}
-        for j = 1, cols do
-            result[i][j] = a[i][j] + b[i][j]
-        end
-    end
-    return result
-end
+  io.write("Enter the dimension of the matrices: ")
+  local dim = tonumber(io.read())
 
--- Matrix subtraction function
-function matrixSubtract(a, b)
-    local rows, cols = #a, #a[1]
-    local result = {}
-    for i = 1, rows do
-        result[i] = {}
-        for j = 1, cols do
-            result[i][j] = a[i][j] - b[i][j]
-        end
-    end
-    return result
-end
+  io.write("Enter the value for the first matrix: ")
+  local value1 = tonumber(io.read())
 
--- Matrix multiplication function
-function matrixMultiply(a, b)
-    local rowsA, colsA = #a, #a[1]
-    local rowsB, colsB = #b, #b[1]
-    local result = {}
-    for i = 1, rowsA do
-        result[i] = {}
-        for j = 1, colsB do
-            local sum = 0
-            for k = 1, colsA do
-                sum = sum + a[i][k] * b[k][j]
-            end
-            result[i][j] = sum
-        end
-    end
+  local matrix1 = {}
+  for i=1,dim do
+      local row = {}
+      for j=1,dim do
+          table.insert(row, value1)
+      end
+      table.insert(matrix1, row)
+  end
+
+  print("First matrix:")
+  print_matrix(matrix1)
+
+  io.write("Enter the value for the second matrix: ")
+  local value2 = tonumber(io.read())
+
+  local matrix2 = {}
+  for i=1,dim do
+      local row = {}
+      for j=1,dim do
+          table.insert(row, value2)
+      end
+      table.insert(matrix2, row)
+  end
+
+  print("Second matrix:")
+  print_matrix(matrix2)
+
+  local result_matrix = matrix_multiply(matrix1, matrix2)
+
+  print("Result matrix:")
+  print_matrix(result_matrix)
 end
